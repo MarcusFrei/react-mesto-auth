@@ -28,6 +28,3 @@
 
 https://github.com/MarcusFrei/mesto-react-auth
 
-**Сайт проекта:**
-
--
