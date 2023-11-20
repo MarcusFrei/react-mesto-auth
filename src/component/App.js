@@ -26,7 +26,7 @@ function App() {
   const [cards, setCards] = useState([]);
   const [currentOpenCard, setCurrentOpenCard] = useState({});
   const [isRegistrationSuccessful, setIsRegistrationSuccessful] =
-    useState(true);
+    useState(false);
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [isAuth, setIsAuth] = useState(false);
@@ -38,9 +38,18 @@ function App() {
     isTooltipOpen;
   const navigate = useNavigate();
 
+  const getData = () => {
+    api
+      .getUserInfo()
+      .then((data) => setCurrentUser(data))
+      .catch((e) => console.log(e));
+    api
+      .getInitialCards()
+      .then((data) => setCards(data))
+      .catch((e) => console.log(e));
+  };
+
   useEffect(() => {
-    api.getUserInfo().then((data) => setCurrentUser(data));
-    api.getInitialCards().then((data) => setCards(data));
     const token = localStorage.getItem("jwt");
     if (token) {
       auth
@@ -48,6 +57,7 @@ function App() {
         .then(({ data }) => {
           setIsAuth(true);
           navigate("/");
+          getData();
 
           setEmail(data.email);
         })
@@ -157,8 +167,8 @@ function App() {
       .deleteCard(id)
       .then((data) => {
         console.log(data);
-        const tempCopy = cards.filter((card) => card._id !== id);
-        setCards(tempCopy);
+        const tempCards = cards.filter((card) => card._id !== id);
+        setCards(tempCards);
 
         closeAllPopups();
       })
@@ -174,10 +184,10 @@ function App() {
         .setLike(card._id)
         .then((data) => {
           console.log(data);
-          const tempCopy = cards.map((card) =>
+          const tempCards = cards.map((card) =>
             card._id === data._id ? data : card
           );
-          setCards(tempCopy);
+          setCards(tempCards);
         })
         .catch((e) => console.log(e));
     } else {
@@ -185,10 +195,10 @@ function App() {
         .deleteLike(card._id)
         .then((data) => {
           console.log(data);
-          const tempCopy = cards.map((card) =>
+          const tempCards = cards.map((card) =>
             card._id === data._id ? data : card
           );
-          setCards(tempCopy);
+          setCards(tempCards);
         })
         .catch((e) => console.log(e));
     }
@@ -216,6 +226,7 @@ function App() {
         setIsRegistrationSuccessful(true);
         setEmail(email);
         setIsAuth(true);
+        getData();
         navigate("/");
       })
       .catch((e) => {

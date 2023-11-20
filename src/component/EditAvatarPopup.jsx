@@ -15,7 +15,7 @@ const EditAvatarPopup = ({ isOpen, onClose, handleSubmit, isLoading }) => {
   };
 
   useEffect(() => {
-    inputRef.current.value = "";
+    resetValidation();
   }, [isOpen]);
 
   return (

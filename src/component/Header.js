@@ -13,8 +13,7 @@ export default function Header({ onLogout, isAuth, email }) {
     return () => window.removeEventListener("resize", changeWidth);
   }, []);
 
-  console.log(email);
-  const changeHeader = () => {
+  const changeHeaderNavBlock = () => {
     switch (pathname) {
       case "/sign-in":
         return (
@@ -36,8 +35,7 @@ export default function Header({ onLogout, isAuth, email }) {
   const showNav = () =>
     windowWidth > 720 ? (
       <div className="header__info">
-        {" "}
-        <span className="header__e-mail">{email} </span>{" "}
+        <span className="header__e-mail">{email} </span>
         <button onClick={onLogout} className="header__logout">
           Выйти
         </button>
@@ -53,7 +51,7 @@ export default function Header({ onLogout, isAuth, email }) {
         src="./images/logo.svg"
         alt="Лого 'Место'"
       />
-      {isAuth ? showNav() : changeHeader()}
+      {isAuth ? showNav() : changeHeaderNavBlock()}
     </header>
   );
 }
